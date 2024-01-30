@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi_chameleon import global_init
 from views import home, account, packages
+from fastapi.staticfiles import StaticFiles
 import uvicorn
 
 app = FastAPI()
@@ -21,6 +22,7 @@ def configure_templates():
 
 
 def configure_routes():
+    app.mount('/static', StaticFiles(directory='static'), name='static')
     app.include_router(home.router)
     app.include_router(account.router)
     app.include_router(packages.router)
