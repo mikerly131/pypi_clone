@@ -5,7 +5,7 @@ router = APIRouter()
 
 
 @router.get('/')
-@template(template_file='home/index.html')
+@template(template_file='home/index.pt')
 def index(user: str = 'anon'):
     return {
         'user_name': user
@@ -13,5 +13,6 @@ def index(user: str = 'anon'):
 
 
 @router.get('/about')
+@template(template_file='home/about.pt')
 def about():
     return {}
