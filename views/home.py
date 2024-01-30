@@ -1,22 +1,16 @@
 from fastapi import APIRouter
 from fastapi_chameleon import template
+from viewmodels.home.index_vm import IndexViewModel
+from fastapi.requests import Request
 
 router = APIRouter()
 
 
 @router.get('/')
 @template(template_file='home/index.pt')
-def index():
-    return {
-        'package_count': 274_000,
-        'release_count': 2_435_232,
-        'user_count': 87_232,
-        'packages': [
-            {'id': 'fastapi', 'summary': 'A great python web framework'},
-            {'id': 'uvicorn', 'summary': 'An ASGI server'},
-            {'id': 'httpx', 'summary': 'Requests for the async world'},
-            ]
-    }
+def index(request: Request):
+    vm = IndexViewModel(request)
+    return vm.to_dict()
 
 
 @router.get('/about')
