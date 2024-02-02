@@ -1,23 +1,43 @@
-import datetime
+import sqlalchemy.orm
 from typing import List, Optional
 from data_models.package import Package
 from data_models.release import Release
+from data_models import db_session
 
 
 def release_count() -> int:
-    return 2_435_232
+    session = db_session.create_session()
+
+    try:
+        return session.query(Release).count()
+    finally:
+        session.close()
 
 
 def package_count() -> int:
-    return 274_000
+    session = db_session.create_session()
+
+    try:
+        return session.query(Package).count()
+    finally:
+        session.close()
 
 
-def latest_packages(limit: int = 5) -> List:
-    return [
-        {'id': 'fastapi', 'summary': 'A great python web framework'},
-        {'id': 'uvicorn', 'summary': 'An ASGI server'},
-        {'id': 'httpx', 'summary': 'Requests for the async world'},
-    ][:limit]
+def latest_packages(limit: int = 5) -> List[Package]:
+    session = db_session.create_session()
+
+    try:
+        releases = (
+            session.query(Release)
+            .options(sqlalchemy.orm.joinedload(Release.package))
+            .order_by(Release.created_date.desc())
+            .limit(limit)
+            .all()
+        )
+    finally:
+        session.close()
+
+    return list({r.package for r in releases})
 
 
 def get_package_by_id(package_name: str) -> Optional[Package]:
@@ -29,4 +49,17 @@ def get_package_by_id(package_name: str) -> Optional[Package]:
 
 
 def get_latest_release(package_name: str) -> Optional[Release]:
-    return Release("1.2.0", datetime.datetime.now())
+    session = db_session.create_session()
+
+    try:
+        release = (
+            session.query(Release)
+            .filter(Release.package_id == package_name)
+            .order_by(Release.created_date.desc())
+            .first()
+        )
+
+        return release
+    finally:
+        session.close()
+
