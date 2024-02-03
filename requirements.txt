@@ -18,3 +18,5 @@ sqlalchemy-stubs==0.4
 starlette==0.35.1
 typing_extensions==4.9.0
 uvicorn==0.27.0.post1
+progressbar2==4.3.2
+python-dateutil==2.8.2
