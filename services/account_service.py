@@ -1,9 +1,15 @@
 from data_models.user import User
 from typing import Optional
+from data_models import db_session
 
 
 def user_count() -> int:
-    return 87_232
+    session = db_session.create_session()
+
+    try:
+        return session.query(User).count()
+    finally:
+        session.close()
 
 
 def create_account(name: str, email: str, password: str) -> User:
