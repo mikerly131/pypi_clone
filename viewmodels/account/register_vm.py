@@ -1,4 +1,6 @@
 from typing import Optional
+
+from services import account_service
 from viewmodels.shared.viewmodel_base import ViewModelBase
 from fastapi.requests import Request
 
@@ -24,3 +26,5 @@ class RegisterViewModel(ViewModelBase):
             self.error = "Your email is required."
         elif not self.password or  len(self.password) < 5:
             self.error = "Your password must be at least 5 characters."
+        elif account_service.get_user_by_email(self.email):
+            self.error = "Please login, already registered."
