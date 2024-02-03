@@ -1,6 +1,7 @@
 from data_models.user import User
 from typing import Optional
 from data_models import db_session
+from passlib.handlers.sha2_crypt import sha512_crypt as crypto
 
 
 def user_count() -> int:
@@ -20,7 +21,7 @@ def create_account(name: str, email: str, password: str) -> User:
         user = User()
         user.email = email
         user.name = name
-        user.hash_password = "TBD"
+        user.hash_password = crypto.hash(password, rounds=113_249)
         session.add(user)
         session.commit()
         return user
@@ -37,7 +38,7 @@ def login_account(email: str, password: str) -> Optional[User]:
         if not user:
             return user
 
-        if False:
+        if not crypto.verify(password, user.hash_password):
             return None
 
         return user
