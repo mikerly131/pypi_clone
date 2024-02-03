@@ -19,8 +19,9 @@ class Release(SQLAlchemyBase):
     url: str = sqlalchemy.Column(sqlalchemy.String)
     size: int = sqlalchemy.Column(sqlalchemy.BigInteger)
 
-    # Package relationship
+    # Package relationship, remember the FK is on the database column
     package_id: str = sqlalchemy.Column(sqlalchemy.String, sqlalchemy.ForeignKey('package.id'))
+    # lazy loaded object through orm, match it to ORM class
     package = orm.relationship('Package')
 
     @property

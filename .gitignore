@@ -1,6 +1,10 @@
 # ignore the created db, not for github
 db
 /db
+.DS_Store
+DS_Store
+/.DS_Store
+/DS_Store
 
 # Ignore idea files as well
 .idea
