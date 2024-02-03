@@ -1,7 +1,6 @@
 import datetime
-
 import sqlalchemy as sa
-from modelbase import SQLAlchemyBase
+from data_models.modelbase import SQLAlchemyBase
 
 
 class User(SQLAlchemyBase):

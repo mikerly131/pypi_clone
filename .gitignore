@@ -1,3 +1,7 @@
+# ignore the created db, not for github
+db
+/db
+
 # Ignore idea files as well
 .idea
 /.idea

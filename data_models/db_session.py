@@ -3,7 +3,7 @@ from typing import Callable, Optional
 
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
-from modelbase import SQLAlchemyBase
+from data_models.modelbase import SQLAlchemyBase
 from sqlalchemy.orm import Session
 
 __factory: Optional[Callable[[], Session]] = None
@@ -32,8 +32,9 @@ def global_init(db_file: str):
     __factory = orm.sessionmaker(bind=engine)
 
     # noinspection PyUnresolvedReferences
-    import __all_models
+    from data_models import __all_models
 
+    # creates all the tables
     SQLAlchemyBase.metadata.create_all(engine)
 
 

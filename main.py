@@ -21,6 +21,7 @@ def configure(dev_mode: bool):
 
 
 def configure_db(dev_mode: bool):
+    # gives absolute path to file
     file = (Path(__file__).parent / 'db' / 'pypi.sqlite').absolute()
     db_session.global_init(file.as_posix())
 
