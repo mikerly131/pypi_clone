@@ -6,6 +6,9 @@ from fastapi.staticfiles import StaticFiles
 import uvicorn
 from data_models import db_session
 
+# app = FastAPI()
+# To hide the docs, which is better for websites
+# alternatively, use first app and modify each route to hide: @router.get('/account', include_in_schema=False)
 app = FastAPI(docs_url=None, redoc_url=None)
 
 
