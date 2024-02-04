@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 import uvicorn
 from data_models import db_session
 
-app = FastAPI()
+app = FastAPI(docs_url=None, redoc_url=None)
 
 
 def main():
