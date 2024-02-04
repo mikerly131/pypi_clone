@@ -2,15 +2,25 @@ from data_models.user import User
 from typing import Optional
 from data_models import db_session
 from passlib.handlers.sha2_crypt import sha512_crypt as crypto
+from sqlalchemy import select, func
 
 
-def user_count() -> int:
-    session = db_session.create_session()
+# sqlalchemy 2.0 with async sessions
+async def user_count() -> int:
+    async with db_session.create_async_session() as session:
+        query = select(func.count(User.id))
+        # returns a tuple, need to access with .scalar()
+        results = await session.execute(query)
+        return results.scalar()
 
-    try:
-        return session.query(User).count()
-    finally:
-        session.close()
+# # sqlalchemy 1.3 with sync session
+# def user_count() -> int:
+#     session = db_session.create_session()
+#
+#     try:
+#         return session.query(User).count()
+#     finally:
+#         session.close()
 
 
 def create_account(name: str, email: str, password: str) -> User:
@@ -46,21 +56,18 @@ def login_account(email: str, password: str) -> Optional[User]:
         session.close()
 
 
-def get_user_by_id(user_id: int) -> Optional[User]:
-    session = db_session.create_session()
-
-    try:
-        # don't query just for user and password
-        return session.query(User).filter(User.id == user_id).first()
-    finally:
-        session.close()
+async def get_user_by_id(user_id: int) -> Optional[User]:
+    async with db_session.create_async_session() as session:
+        query = select(User).filter(User.id == user_id)
+        # returns a tuple, need to access with .scalar()
+        result = await session.execute(query)
+        return result.scalar_one_or_none()
 
 
-def get_user_by_email(email: str) -> Optional[User]:
-    session = db_session.create_session()
+async def get_user_by_email(email: str) -> Optional[User]:
+    async with db_session.create_async_session() as session:
+        query = select(User).filter(User.email == email)
+        # returns a tuple, need to access with .scalar()
+        result = await session.execute(query)
+        return result.scalar_one_or_none()
 
-    try:
-        # don't query just for user and password
-        return session.query(User).filter(User.email == email).first()
-    finally:
-        session.close()

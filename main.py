@@ -1,6 +1,6 @@
 from pathlib import Path
 from fastapi import FastAPI
-from fastapi_chameleon import global_init
+import fastapi_chameleon
 from views import home, account, packages
 from fastapi.staticfiles import StaticFiles
 import uvicorn
@@ -27,7 +27,7 @@ def configure_db(dev_mode: bool):
 
 
 def configure_templates(dev_mode: bool):
-    global_init('templates', auto_reload=dev_mode)
+    fastapi_chameleon.global_init('templates', auto_reload=dev_mode)
 
 
 def configure_routes():

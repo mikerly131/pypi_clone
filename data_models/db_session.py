@@ -3,7 +3,6 @@ from typing import Callable, Optional
 
 import sqlalchemy as sa
 import sqlalchemy.orm as orm
-# it really hates these imports and idk why
 from sqlalchemy.ext.asyncio import AsyncEngine, create_async_engine, AsyncSession
 from data_models.modelbase import SQLAlchemyBase
 from sqlalchemy.orm import Session
@@ -30,7 +29,7 @@ def global_init(db_file: str):
 
     conn_str = 'sqlite+pysqlite:///' + db_file.strip()
     async_conn_str = 'sqlite+aiosqlite:///' + db_file.strip()
-    print('Connecting to DB with {}'.format(conn_str))
+    print('Connecting to DB with {}'.format(async_conn_str))
 
     # Adding check_same_thread = False after the recording. This can be an issue about
     # creating / owner thread when cleaning up sessions, etc. This is a sqlite restriction

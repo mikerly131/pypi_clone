@@ -15,8 +15,9 @@ router = APIRouter()
 
 @router.get('/account')
 @template(template_file='account/index.pt')
-def get_account(request: Request):
+async def get_account(request: Request):
     vm = AccountViewModel(request)
+    await vm.load()
     return vm.to_dict()
 
 
