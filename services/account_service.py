@@ -23,28 +23,25 @@ async def user_count() -> int:
 #         session.close()
 
 
-def create_account(name: str, email: str, password: str) -> User:
-    session = db_session.create_session()
+async def create_account(name: str, email: str, password: str) -> User:
+    user = User()
+    user.email = email
+    user.name = name
+    user.hash_password = crypto.hash(password, rounds=113_249)
 
-    try:
-        # create object, insert in db, commit
-        user = User()
-        user.email = email
-        user.name = name
-        user.hash_password = crypto.hash(password, rounds=113_249)
+    async with db_session.create_async_session() as session:
         session.add(user)
-        session.commit()
-        return user
-    finally:
-        session.close()
+        await session.commit()
+
+    return user
 
 
-def login_account(email: str, password: str) -> Optional[User]:
-    session = db_session.create_session()
+async def login_account(email: str, password: str) -> Optional[User]:
+    async with db_session.create_async_session() as session:
+        query = select(User).filter(User.email == email)
+        result = await session.execute(query)
+        user = result.scalar_one_or_none()
 
-    try:
-        # don't query just for user and password
-        user = session.query(User).filter(User.email == email).first()
         if not user:
             return user
 
@@ -52,8 +49,6 @@ def login_account(email: str, password: str) -> Optional[User]:
             return None
 
         return user
-    finally:
-        session.close()
 
 
 async def get_user_by_id(user_id: int) -> Optional[User]:

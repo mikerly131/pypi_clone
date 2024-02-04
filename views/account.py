@@ -1,6 +1,6 @@
+import asyncio
 from fastapi import APIRouter, status
 from fastapi_chameleon import template
-
 from services import account_service
 from utilities import cookie_auth
 from viewmodels.account.login_vm import LoginViewModel
@@ -36,7 +36,7 @@ async def register_post(request: Request):
     if vm.error:
         return vm.to_dict()
     # Create account
-    account = account_service.create_account(vm.name, vm.email, vm.password)
+    account = await account_service.create_account(vm.name, vm.email, vm.password)
     # Login user
     response = RedirectResponse(url='/account', status_code=status.HTTP_302_FOUND)
     cookie_auth.set_auth(response, account.id)
@@ -60,8 +60,9 @@ async def login_post(request: Request):
     if vm.error:
         return vm.to_dict()
 
-    user = account_service.login_account(vm.email, vm.password)
+    user = await account_service.login_account(vm.email, vm.password)
     if not user:
+        await asyncio.sleep(3)
         vm.error = 'The account does not exist or the password is wrong'
         return vm.to_dict()
 
