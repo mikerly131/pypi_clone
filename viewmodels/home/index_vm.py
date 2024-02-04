@@ -1,3 +1,4 @@
+from data_models.package import Package
 from services import package_service, account_service
 from viewmodels.shared.viewmodel_base import ViewModelBase
 from fastapi.requests import Request
@@ -14,7 +15,7 @@ class IndexViewModel(ViewModelBase):
         self.packages: List = []
 
     async def load(self):
-        self.release_count: int = package_service.release_count()
+        self.release_count: int = await package_service.release_count()
         self.user_count: int = await account_service.user_count()
-        self.package_count: int = package_service.package_count()
-        self.packages: List = package_service.latest_packages(limit=5)
+        self.package_count: int = await package_service.package_count()
+        self.packages: List[Package] = await package_service.latest_packages(limit=5)
