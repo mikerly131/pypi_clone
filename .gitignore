@@ -6,6 +6,14 @@ DS_Store
 /.DS_Store
 /DS_Store
 
+# Remove source data from github for now
+source_data
+/source_data
+.source_data
+/.source_data
+
+
+
 # Ignore idea files as well
 .idea
 /.idea
