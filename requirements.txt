@@ -2,7 +2,7 @@ annotated-types==0.6.0
 anyio==4.2.0
 Chameleon==4.5.2
 click==8.1.7
-fastapi==0.109.0
+fastapi==0.109.2
 fastapi-chameleon==0.1.14
 greenlet==3.0.3
 h11==0.14.0

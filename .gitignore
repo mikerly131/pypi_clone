@@ -12,11 +12,11 @@ DS_Store
 /.DS_Store
 /DS_Store
 
-# Remove source data from github for now
-source_data
-/source_data
-.source_data
-/.source_data
+# Putting on github for linxu box on DO to have proper files for setup
+#source_data
+#/source_data
+#.source_data
+#/.source_data
 
 
 # Ignore idea files as well
