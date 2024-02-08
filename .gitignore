@@ -1,3 +1,9 @@
+# ignore server setup file & scripts for now
+server
+/server
+.server
+/.server
+
 # ignore the created db, not for github
 db
 /db
@@ -11,7 +17,6 @@ source_data
 /source_data
 .source_data
 /.source_data
-
 
 
 # Ignore idea files as well
